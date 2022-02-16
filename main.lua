@@ -1,11 +1,12 @@
 local Peeker = require("peeker")
+local push = require("push")
 
 local timer = 0
 local circles = {}
 
 function love.load()
 	local ww, wh = love.graphics.getDimensions()
-	for i = 1, 16 do
+	for i = 1, 76 do
 		local c = {
 			fill = love.math.random() <= 0.5 and "fill" or "line",
 			x = love.math.random(ww * 0.25, ww * 0.75),
@@ -15,6 +16,7 @@ function love.load()
 		}
 		table.insert(circles, c)
 	end
+	push:setupScreen(320, 240, 1920, 1080)
 end
 
 function love.update(dt)
@@ -23,6 +25,7 @@ function love.update(dt)
 end
 
 function love.draw()
+	push:start()
 	love.graphics.clear(0, 0, 0, 1)
 	love.graphics.setColor(1, 0, 0, 1)
 	for _, c in ipairs(circles) do
@@ -33,11 +36,12 @@ function love.draw()
 	end
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.print("Frame recorded: " .. tostring(Peeker.get_current_frame()), 32, 64)
+	push:finish()
 end
 
 function love.keypressed(key)
 	if key == "r" then
-		if love.keyboard.isDown('lshift', 'rshift') then
+		if Peeker.get_status() then
 			print("Peeker: Finalize recording. File: ", Peeker.get_out_dir())
 			Peeker.stop(true)
 		else
@@ -56,4 +60,8 @@ function love.keypressed(key)
 			end
 		end
 	end
+end
+
+function love.resize(w, h)
+  push:resize(w, h)
 end
