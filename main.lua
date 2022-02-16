@@ -1,5 +1,10 @@
 local Peeker = require("peeker")
 
+-- Ensures output appears in vim as its printed instead of only after program
+-- terminates.
+io.stdout:setvbuf("no")
+
+
 local timer = 0
 local circles = {}
 
