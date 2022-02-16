@@ -1,6 +1,11 @@
 local Peeker = require("peeker")
 local push = require("push")
 
+-- Ensures output appears in vim as its printed instead of only after program
+-- terminates.
+io.stdout:setvbuf("no")
+
+
 local timer = 0
 local circles = {}
 
